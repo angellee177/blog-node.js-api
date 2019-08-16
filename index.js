@@ -1,0 +1,44 @@
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 5000;
+const mongoose = require('mongoose');
+const dbConnection = {
+    development: "mongodb://localhost/article",
+    test: "mongodb://localhost/test"
+}
+
+// to connect with database
+const env = process.env.NODE_ENV || 'development';
+
+app.use(express.json());
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
+
+mongoose.connect(dbConnection[env], { useNewUrlParser: true, useCreateIndex: true});
+
+// Using Route Level Middleware
+const router = require('./routes');
+app.use("/api", router);
+
+
+app.get("/", (req, res)=>{
+    res.status(200).json({
+        success: true,
+        message: "Welcome to API!"
+    });
+});
+
+
+
+app.listen(port, () => {
+    console.log(`Server Started at ${Date()}!`);
+    console.log(`Listening on port ${port}!`);
+    });
+    
+    module.exports = app;
+
+
+
