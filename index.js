@@ -4,7 +4,7 @@ const app = express();
 const port = process.env.PORT || 5000;
 const mongoose = require('mongoose');
 const dbConnection = {
-    development: "mongodb://localhost/article",
+    development: "mongodb+srv://angellee177:<password>@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority",
     test: "mongodb://localhost/test"
 }
 
