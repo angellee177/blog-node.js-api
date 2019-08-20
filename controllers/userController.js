@@ -2,6 +2,9 @@ const User = require('./../models/user');
 const validate = require('./../models/user');
 const Post = require('./../models/post');
 
+// for validation
+const Joi = require('@hapi/joi');
+
 // authentication function
 const auth = require('./../middleware/auth');
 

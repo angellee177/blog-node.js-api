@@ -3,13 +3,13 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 const mongoose = require('mongoose');
-const dbConnection = {
-    development: "mongodb+srv://angellee177:<password>@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority",
-    test: "mongodb://localhost/test"
-}
+// const dbConnection = {
+//     development: "mongodb+srv://angellee177:<password>@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority",
+//     test: "mongodb://localhost/test"
+// }
 
 // to connect with database
-const env = process.env.NODE_ENV || 'development';
+// const env = process.env.NODE_ENV || 'development';
 
 app.use(express.json());
 app.use(
@@ -19,14 +19,15 @@ app.use(
 );
 
 // to connect with the DB
-mongoose.connect('mongodb+srv://angellee177:<password>@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useCreateIndex: true});
+mongoose.connect('mongodb+srv://angellee177:5LWN2FrrmyVEa7F@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority', 
+{ useNewUrlParser: true, useCreateIndex: true});
 
 
 // check if the config already connected
-// if (!config.get('jwtPrivateKey')){
-//     console.error('FATAL ERROR: jwtPrivateKey is not defined.');
-//     process.exit(1);
-// }
+if (!config.get('jwtPrivateKey')){
+    console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+    process.exit(1);
+}
 
 // Using Route Level Middleware
 const router = require('./routes');
