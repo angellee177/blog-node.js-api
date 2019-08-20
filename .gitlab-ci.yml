@@ -14,4 +14,3 @@ production:
     - dpl --provider=heroku --app=angel-article-api --api-key=$HEROKU_API_KEY
   only:
     - master
-view raw
