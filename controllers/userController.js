@@ -1,6 +1,5 @@
-const User = require('./../models/user');
+const {User, validate} = require('./../models/user');
 const Post = require('./../models/post');
-const config = require('config');
 
 // console.log(User);
 
