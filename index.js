@@ -19,7 +19,7 @@ app.use(
 );
 
 // to connect with the DB
-mongoose.connect(dbConnection[env], { useNewUrlParser: true, useCreateIndex: true});
+mongoose.connect('mongodb+srv://angellee177:<password>@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useCreateIndex: true});
 
 
 // check if the config already connected
