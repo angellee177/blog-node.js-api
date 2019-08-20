@@ -1,9 +1,24 @@
 const User = require('./../models/user');
+const validate = require('./../models/user');
 const Post = require('./../models/post');
 
+// authentication function
+const auth = require('./../middleware/auth');
+
 const _= require('lodash');
+
 // for encrypt the Password
 const bcrypt = require('bcrypt');
+
+// Validation Function
+// function validate(req){
+//     const schema = {
+//         email: Joi.string().min(5).max(255).required().email(),
+//         password: Joi.string().min(5).max(255).required()
+//     };
+//     return Joi.validate(req, schema);
+// }
+
 
 // Register new User Function
 async function createUser(req, res){
@@ -18,6 +33,7 @@ async function createUser(req, res){
     const salt = await bcrypt.genSalt(10);
     user.password = await bcrypt.hash(user.password, salt)
     
+    // save the User
     await user.save(function(err){
         if(err) return res.status(422).json({error: err});
 
@@ -27,9 +43,31 @@ async function createUser(req, res){
 }
 
 
+// Login Controller
+async function loginUser(req, res){
+    // check if user input the right input
+    const { error } = validate(req.body);
+    if(error) return res.status(400).json(error.details[0].message);
+
+    // check if email already register
+    let user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(400).json('Email are not Registered!');
+
+    // check if the password that store in DB same with the User input
+    const validPassword = await bcrypt.compare(req.body.password, user.password)
+    if(!validPassword) return res.status(400).json('there is something wrong with your password!');
+
+    // generate json Token
+    const token = user.generateAuthToken();
+    res.header('authentication-token', token).json(_.pick(user, ['_id', 'name', 'email']));
+};
+
+
+
 // insert Post
 async function insertPost(req, res){
-    const post = new Post({title: req.body.title, body: req.body.body, user: req.params.id})
+    const post = new Post({title: req.body.title, body: req.body.body, user: req.user._id})
+    .populate('user', 'name')
     // save data
     await post.save(function(err, data){
         if(err) return res.status(422).json({error: err});
@@ -54,14 +92,17 @@ function showAllUser(req, res){
 
 // Show User based on Id and get specify Post
 function userPostList(req, res){
-    User.findById(req.params.id).populate('posts')
-    .then((data)=>{
-        res.status(200).json(data);
-    })
-    .catch((err)=>{
-        res.status(422).json({error: err})
-    })
+  User.findById(req.params.id).populate('posts', 'title')
+  .then((data)=>{
+      res.status(200).json(data)
+  })
+  .catch((err)=>{
+      if(err) return res.status(422).json({error: err})
+  })
 }
 
-module.exports = {createUser, insertPost, showAllUser, userPostList};
+
+
+
+module.exports = {createUser, showAllUser, userPostList, loginUser, insertPost};
 

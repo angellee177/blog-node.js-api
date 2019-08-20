@@ -1,3 +1,4 @@
+const config = require('config');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
@@ -17,7 +18,15 @@ app.use(
     })
 );
 
+// to connect with the DB
 mongoose.connect(dbConnection[env], { useNewUrlParser: true, useCreateIndex: true});
+
+
+// check if the config already connected
+if (!config.get('jwtPrivateKey')){
+    console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+    process.exit(1);
+}
 
 // Using Route Level Middleware
 const router = require('./routes');
