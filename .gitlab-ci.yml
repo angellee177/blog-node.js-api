@@ -1,11 +1,11 @@
 image: node:latest
 
 stages:
-  - development
+  - production
   
 production:
   type: deploy
-  stage: development
+  stage: production
   image: ruby:latest
   script:
     - apt-get update -qy
