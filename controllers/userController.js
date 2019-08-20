@@ -37,12 +37,10 @@ async function createUser(req, res){
     user.password = await bcrypt.hash(user.password, salt)
     
     // save the User
-    await user.save(function(err){
-        if(err) return res.status(422).json({error: err});
+    const result = await user.save();
 
-        // response or output from function    
-        res.status(200).json(_.pick(user, ['_id','name', 'email', 'password']));
-    })
+    // response or output from function    
+    res.status(200).json(result);
 }
 
 
