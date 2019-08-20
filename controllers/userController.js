@@ -72,11 +72,8 @@ async function insertPost(req, res){
     const post = new Post({title: req.body.title, body: req.body.body, user: req.user._id})
     .populate('user', 'name')
     // save data
-    await post.save(function(err, data){
-        if(err) return res.status(422).json({error: err});
-
-        res.status(200).json(data);
-    });
+    const result = await post.save();
+    res.status(200).json(result);
     
 
 }
