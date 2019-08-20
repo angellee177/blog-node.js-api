@@ -2,18 +2,8 @@ const User = require('./../models/user');
 const Post = require('./../models/post');
 const config = require('config');
 
-console.log(user);
+// console.log(User);
 
-// for validation
-const Joi = require('@hapi/joi');
-
-// authentication function
-const auth = require('./../middleware/auth');
-
-const _= require('lodash');
-
-// for encrypt the Password
-const bcrypt = require('bcrypt');
 
 // Validation Function
 // function validate(req){
@@ -40,15 +30,8 @@ async function createUser(req, res){
     
     // save the User
     const result = await user.save();
-<<<<<<< HEAD
-        // response or output from function    
-        res.status(200).json(result);
-    console.log(result)
-=======
-
     // response or output from function    
     res.status(200).json(result);
->>>>>>> e08e6ccf18af111e975d1fd4917d2c07ba74089d
 }
 
 
@@ -71,10 +54,10 @@ async function loginUser(req, res){
     const token = user.generateAuthToken();
     res.header('authentication-token', token).json(_.pick(user, ['_id', 'name', 'email']));
 
-    console.log(token)
+    // console.log(token)
 };
 
-console.log(loginUser)
+// console.log(loginUser)
 
 // insert Post
 async function insertPost(req, res){
