@@ -23,10 +23,10 @@ mongoose.connect('mongodb+srv://angellee177:<password>@cluster0-bgfog.mongodb.ne
 
 
 // check if the config already connected
-if (!config.get('jwtPrivateKey')){
-    console.error('FATAL ERROR: jwtPrivateKey is not defined.');
-    process.exit(1);
-}
+// if (!config.get('jwtPrivateKey')){
+//     console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+//     process.exit(1);
+// }
 
 // Using Route Level Middleware
 const router = require('./routes');
