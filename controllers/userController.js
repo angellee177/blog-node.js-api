@@ -2,7 +2,8 @@ const {User, validate} = require('./../models/user');
 const Post = require('./../models/post');
 
 // console.log(User);
-
+// to encrypt the password
+const bcrypt = require('bcrypt');
 
 // Validation Function
 // function validate(req){
