@@ -13,8 +13,7 @@
   "scripts": {
     "test": "mocha test/* --exit",
     "coverage": "nyc --report-dir=./public/coverage --reporter=html npm run test",
-    "start": "node index.js",
-    "dev": "npm start index.js"
+    "start": "node index.js"
   },
   "author": "",
   "license": "ISC",
