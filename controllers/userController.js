@@ -1,6 +1,8 @@
 const User = require('./../models/user');
-const validate = require('./../models/user');
 const Post = require('./../models/post');
+const config = require('config');
+
+console.log(user);
 
 // for validation
 const Joi = require('@hapi/joi');
@@ -37,12 +39,10 @@ async function createUser(req, res){
     user.password = await bcrypt.hash(user.password, salt)
     
     // save the User
-    await user.save(function(err){
-        if(err) return res.status(422).json({error: err});
-
+    const result = await user.save();
         // response or output from function    
-        res.status(200).json(_.pick(user, ['_id','name', 'email', 'password']));
-    })
+        res.status(200).json(result);
+    console.log(result)
 }
 
 
@@ -60,12 +60,15 @@ async function loginUser(req, res){
     const validPassword = await bcrypt.compare(req.body.password, user.password)
     if(!validPassword) return res.status(400).json('there is something wrong with your password!');
 
+
     // generate json Token
     const token = user.generateAuthToken();
     res.header('authentication-token', token).json(_.pick(user, ['_id', 'name', 'email']));
+
+    console.log(token)
 };
 
-
+console.log(loginUser)
 
 // insert Post
 async function insertPost(req, res){
