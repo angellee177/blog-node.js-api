@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 //     development: "mongodb+srv://angellee177:<password>@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority",
 //     test: "mongodb://localhost/test"
 // }
-
+5LWN2FrrmyVEa7F
 // to connect with database
 // const env = process.env.NODE_ENV || 'development';
 
@@ -20,7 +20,9 @@ app.use(
 
 // to connect with the DB
 mongoose.connect('mongodb+srv://angellee177:5LWN2FrrmyVEa7F@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority', 
-{ useNewUrlParser: true, useCreateIndex: true});
+{ useNewUrlParser: true, useCreateIndex: true}, function(err){
+    console.log(err)
+});
 
 
 // check if the config already connected
