@@ -40,9 +40,15 @@ async function createUser(req, res){
     
     // save the User
     const result = await user.save();
+<<<<<<< HEAD
         // response or output from function    
         res.status(200).json(result);
     console.log(result)
+=======
+
+    // response or output from function    
+    res.status(200).json(result);
+>>>>>>> e08e6ccf18af111e975d1fd4917d2c07ba74089d
 }
 
 
