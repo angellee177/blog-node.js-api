@@ -1,4 +1,4 @@
-const {User, validate} = require('./../models/user');
+const User = require('./../models/user');
 const Post = require('./../models/post');
 
 // console.log(User);
@@ -38,8 +38,8 @@ async function createUser(req, res){
 // Login Controller
 async function loginUser(req, res){
     // check if user input the right input
-    const { error } = validate(req.body);
-    if(error) return res.status(400).json(error.details[0].message);
+    // const { error } = validate(req.body);
+    // if(error) return res.status(400).json(error.details[0].message);
 
     // check if email already register
     let user = await User.findOne({ email: req.body.email });
