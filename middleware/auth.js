@@ -5,8 +5,8 @@ function auth(req, res,next){
         const token = req.header('authentication-token');    
 
         // test split bearer token
-        const trySplit = token.split(" ")
-        console.log(trySplit)
+        // const trySplit = token.split(" ")
+        // console.log(trySplit)
 
         if(!token) return res.status(401).send('Access denied, No Token Provided.')
         
