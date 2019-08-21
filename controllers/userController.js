@@ -1,6 +1,6 @@
 const User = require('./../models/user');
 const Post = require('./../models/post');
-
+const _    = require('lodash');
 // console.log(User);
 // to encrypt the password
 const bcrypt = require('bcrypt');
@@ -52,9 +52,7 @@ async function loginUser(req, res){
 
     // generate json Token
     const token = user.generateAuthToken();
-    res.header('authentication-token', token).json(_.pick(user, ['_id', 'name', 'email']));
-
-    // console.log(token)
+    res.status(200).json({token})
 };
 
 // console.log(loginUser)
