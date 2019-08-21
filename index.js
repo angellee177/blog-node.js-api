@@ -10,30 +10,30 @@ const swaggerFile = require('./swagger.json');
 // get Swagger Ui
 const swaggerUI = require('swagger-ui-express');
 
-// const dbConnection = {
-//     development: "mongodb+srv://angellee177:<password>@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority",
-//     test: "mongodb://localhost/test"
-// }
+const dbConnection = {
+    development: "mongodb+srv://angellee177:5LWN2FrrmyVEa7F@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority",
+    test: "mongodb://localhost/test",
+    production:  "mongodb+srv://angellee177:5LWN2FrrmyVEa7F@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority"
+}
 
 // to connect with database
-// const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || 'development';
 
 app.use(express.json());
 
-// get Swagger
-app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
-
-app.use(
-    express.urlencoded({
-        extended: true
-    })
-);
 
 // to connect with the DB
-mongoose.connect('mongodb+srv://angellee177:5LWN2FrrmyVEa7F@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority', 
+mongoose.connect(dbConnection[env], 
 { useNewUrlParser: true, useCreateIndex: true}, function(err){
     console.log(err)
-});
+}),function(err){
+    if(err) return console.log(`Failed to connect ${err}`)
+    app.listen(port, () => {
+        console.log(`Server Started at ${Date()}!`);
+        console.log(`Listening on port ${port}!`);
+        });
+
+};
 
 
 // check if the config already connected
@@ -56,10 +56,16 @@ app.get("/", (req, res)=>{
 
 
 
-app.listen(port, () => {
-    console.log(`Server Started at ${Date()}!`);
-    console.log(`Listening on port ${port}!`);
-    });
+// get Swagger
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
+
+app.use(
+    express.urlencoded({
+        extended: true
+    })
+);
+
+
     
     module.exports = app;
 

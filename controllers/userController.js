@@ -57,6 +57,8 @@ async function loginUser(req, res){
 
 // console.log(loginUser)
 
+// 
+
 // insert Post
 async function insertPost(req, res){
     const post = new Post({title: req.body.title, body: req.body.body, user: req.user._id})
