@@ -21,20 +21,7 @@ const env = process.env.NODE_ENV || 'development';
 
 app.use(express.json());
 
-
-// to connect with the DB
-mongoose.connect(dbConnection[env], 
-{ useNewUrlParser: true, useCreateIndex: true}),
-function(err){
-    if(err) return console.log(`Failed to connect`)
-    app.listen(port, () => {
-        console.log(`Server Started at ${Date()}!`);
-        console.log(`Listening on port ${port}!`);
-        });
-    console.log("Berhasil connect ke database")
-};
-
-
+console.log(dbConnection[env])
 // check if the config already connected
 if (!config.get('jwtPrivateKey')){
     console.error('FATAL ERROR: jwtPrivateKey is not defined.');
@@ -64,9 +51,27 @@ app.use(
     })
 );
 
+// to connect with the DB
+try{
+    mongoose.connect(dbConnection[env], 
+    { useNewUrlParser: true, useCreateIndex: true})
+
+    app.listen(port, () => {
+        console.log(`Server Started at ${Date()}!`);
+        console.log(`Listening on port ${port}!`);
+        });
+
+    console.log("success connect to database")
+}
+catch(error){
+    handleError(error);
+};
+
+
+
 
     
-    module.exports = app;
+    // module.exports = app;
 
 
 
