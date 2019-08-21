@@ -1,22 +1,19 @@
 const User = require('./../models/user');
 const Post = require('./../models/post');
 const _    = require('lodash');
-// console.log(User);
+
 // to encrypt the password
 const bcrypt = require('bcrypt');
 
-// Validation Function
-// function validate(req){
-//     const schema = {
-//         email: Joi.string().min(5).max(255).required().email(),
-//         password: Joi.string().min(5).max(255).required()
-//     };
-//     return Joi.validate(req, schema);
-// }
-
+// get Validation function
+const {validationRegister, validationPost, validationLogin} = require('./../helper/validator'); 
 
 // Register new User Function
 async function createUser(req, res){
+    // checking if there is any error at req.body
+    const { error } = validationRegister(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
     // to check if email already register
     let user = await User.findOne({ email: req.body.email });
     if (user) return res.status(400).send('User already Registered.');
@@ -38,8 +35,8 @@ async function createUser(req, res){
 // Login Controller
 async function loginUser(req, res){
     // check if user input the right input
-    // const { error } = validate(req.body);
-    // if(error) return res.status(400).json(error.details[0].message);
+    const { error } = validationLogin(req.body);
+    if(error) return res.status(400).json(error.details[0].message);
 
     // check if email already register
     let user = await User.findOne({ email: req.body.email });
@@ -55,19 +52,37 @@ async function loginUser(req, res){
     res.status(200).json({token})
 };
 
-// console.log(loginUser)
 
-// 
+// to check the current user
+async function current_user(req, res){
+    // check if user input the right input
+    const { error } = validationLogin(req.body);
+    if(error) return res.status(400).json(error.details[0].message);
+
+    // check if email already register
+    let user = await User.findOne({ email: req.body.email });
+    if (!user) return res.status(400).json('Email are not Registered!');
+
+     // check if the password that store in DB same with the User input
+     const validPassword = await bcrypt.compare(req.body.password, user.password)
+     if(!validPassword) return res.status(400).json('there is something wrong with your password!');
+     
+    // Decryption the token to get User Information
+    const token = user.generateAuthToken();
+    res.header('authentication-token', token).send(_.pick(user, ['_id', 'name', 'email']))
+}
 
 // insert Post
 async function insertPost(req, res){
+    // checking if there is any error inputs
+    const { error } = validationPost(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
+
     const post = new Post({title: req.body.title, body: req.body.body, user: req.user._id})
     .populate('user', 'name')
     // save data
     const result = await post.save();
     res.status(200).json(result);
-    
-
 }
 
 
@@ -96,5 +111,5 @@ function userPostList(req, res){
 
 
 
-module.exports = {createUser, showAllUser, userPostList, loginUser, insertPost};
+module.exports = {createUser, loginUser, current_user, insertPost, showAllUser, userPostList};
 

@@ -1,7 +1,7 @@
 const config = require('config');
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 5001;
 const mongoose = require('mongoose');
 
 // get Swagger File for documentation
@@ -71,7 +71,7 @@ catch(error){
 
 
     
-    module.exports = app;
+    // module.exports = app;
 
 
 

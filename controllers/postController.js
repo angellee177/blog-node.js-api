@@ -1,5 +1,6 @@
 const Post = require('./../models/post');
 const User = require('./../models/user');
+const { validationPost } = require('./../helper/validator');
 
 // Update Post based on User ID
 function UpdatePost(req, res){
@@ -8,11 +9,14 @@ function UpdatePost(req, res){
         console.log(data.user._id)
 
         // Checking if the user id same with the creator
-        if(data.user._id != req.query.user_id){
+        if(data.user._id != req.user._id){
            return res.status(422).json("This is not your Post");
 
         }
-        
+
+        // checking if there is any error inputs
+        const { error } = validationPost(req.body);
+        if(error) return res.status(400).send(error.details[0].message);
         Post.findByIdAndUpdate(req.params.id,
             {
                 $set: {title: req.body.title, body: req.body.body}
