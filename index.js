@@ -24,15 +24,14 @@ app.use(express.json());
 
 // to connect with the DB
 mongoose.connect(dbConnection[env], 
-{ useNewUrlParser: true, useCreateIndex: true}, function(err){
-    console.log(err)
-}),function(err){
-    if(err) return console.log(`Failed to connect ${err}`)
+{ useNewUrlParser: true, useCreateIndex: true}),
+function(err){
+    if(err) return console.log(`Failed to connect`)
     app.listen(port, () => {
         console.log(`Server Started at ${Date()}!`);
         console.log(`Listening on port ${port}!`);
         });
-
+    console.log("Berhasil connect ke database")
 };
 
 
