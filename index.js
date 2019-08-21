@@ -3,6 +3,13 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 const mongoose = require('mongoose');
+
+// get Swagger File for documentation
+const swaggerFile = require('./swagger.json');
+
+// get Swagger Ui
+const swaggerUI = require('swagger-ui-express');
+
 // const dbConnection = {
 //     development: "mongodb+srv://angellee177:<password>@cluster0-bgfog.mongodb.net/test?retryWrites=true&w=majority",
 //     test: "mongodb://localhost/test"
@@ -12,6 +19,10 @@ const mongoose = require('mongoose');
 // const env = process.env.NODE_ENV || 'development';
 
 app.use(express.json());
+
+// get Swagger
+app.use('/api-docs', swaggerUI.serve, swaggerUI.setup(swaggerFile));
+
 app.use(
     express.urlencoded({
         extended: true
