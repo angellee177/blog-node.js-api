@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "title": "Express Auth",
     "contact": {
-      "email": "Angelriapurnamasari17@gmail.com"
+      "email": "FikriRNurhidayat@gmail.com"
     },
     "license": {
       "name": "Apache 2.0",
@@ -17,33 +17,49 @@
   "tags": [
     {
       "name": "User Operation",
-      "description": "Operation for Register and Get User Data",
+      "description": "Operations about user",
       "externalDocs": {
-        "description": "Find out more about our API",
+        "description": "Find out more about our store",
         "url": "http://swagger.io"
       }
     }
   ],
   "schemes": [
-    "https",
     "http"
   ],
   "paths": {
+    "/user/show": {
+      "get": {
+        "tags": [
+          "User Operation"
+        ],
+        "summary": "Show All User",
+        "description": "Show all user registered",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "All user showed."
+          }
+        }
+      }
+    },
     "/user/create": {
       "post": {
         "tags": [
           "User Operation"
         ],
-        "comment": "router for check Register",
         "summary": "Register User",
-        "description": "",
+        "description": "Regiter an user",
         "operationId": "addUser",
         "consumes": [
-          "application/json",
-          "application/xml"
+          "application/json"
         ],
         "produces": [
-          "application/xml",
           "application/json"
         ],
         "parameters": [
@@ -58,49 +74,23 @@
           }
         ],
         "responses": {
-          "400": {
-            "description": "Email already register."
+          "201": {
+            "description": "User successfully created."
           }
         }
-      },
-      "get": {
-        "tags": [
-          "User Operation"
-        ],
-        "summary": "Finding out who current is.",
-        "description": "",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/xml",
-          "application/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "User exist and token verified!"
-          }
-        },
-        "security": [
-          {
-            "Authorization": []
-          }
-        ]
       }
     },
     "/auth/login": {
       "post": {
         "tags": [
-          "Login"
+          "User Operation"
         ],
         "summary": "Login User",
-        "description": "User login",
+        "description": "Login to registered user",
         "consumes": [
-          "application/json",
-          "application/xml"
+          "application/json"
         ],
         "produces": [
-          "application/xml",
           "application/json"
         ],
         "parameters": [
@@ -117,6 +107,151 @@
         "responses": {
           "200": {
             "description": "If user exist, and  the password is matched. It will response token object."
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/auth/currentUser": {
+      "get": {
+        "tags": [
+          "User Operation"
+        ],
+        "summary": "current User",
+        "description": "show Current User Information",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "header",
+            "name": "header",
+            "description": "Will gett User Data from token",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/UserLogin"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "If access is given. It will show user detail information."
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/user/show/:id": {
+      "get": {
+        "tags": [
+          "User Operation"
+        ],
+        "summary": "Show User",
+        "description": "Get users details information",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "If access is given. It will show user details."
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/user/delete": {
+      "delete": {
+        "tags": [
+          "User Operation"
+        ],
+        "summary": "Delete User",
+        "description": "Delete current user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "If access is given. It will delete current user."
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      }
+    },
+    "/user/create/post": {
+      "post": {
+        "tags": [
+          "Post Operation"
+        ],
+        "summary": "Create Post",
+        "description": "Create post for current user",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "It will create user post if access is given.",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Post"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "If access is given. It will create current user post."
+          }
+        },
+        "security": [
+          {
+            "Authorization": []
+          }
+        ]
+      },
+      "get": {
+        "tags": [
+          "Post Operation"
+        ],
+        "summary": "Get Post",
+        "description": "Get current user post",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "If access is given. It will show current user post."
           }
         }
       }
@@ -140,11 +275,11 @@
       "properties": {
         "name": {
           "type": "string",
-          "example": "Angel Ria Purnamasari"
+          "example":"angel"
         },
         "email": {
           "type": "string",
-          "example": "test@gmail.com"
+          "example": "test@mail.com"
         },
         "password": {
           "type": "string",
@@ -161,11 +296,28 @@
       "properties": {
         "email": {
           "type": "string",
-          "example": "test@gmail.com"
+          "example": "test@mail.com"
         },
         "password": {
           "type": "string",
           "example": "123456"
+        }
+      }
+    },
+    "Post": {
+      "type": "object",
+      "required": [
+        "title",
+        "body"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Jalan-jalan"
+        },
+        "body": {
+          "type": "string",
+          "example": "Taman Nasional"
         }
       }
     }

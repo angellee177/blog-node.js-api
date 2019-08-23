@@ -27,7 +27,7 @@ function validationPost(postSchema){
         title: Joi.string().min(5).required(),
         body: Joi.string().min(5).required()
     }
-    return Joi.validate(postSchema, schema);
+    return Joi.validate(postSchema, schema)
 }
 
 module.exports = {validationRegister, validationLogin,validationPost};

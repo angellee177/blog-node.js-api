@@ -1,6 +1,7 @@
 const User = require('./../models/user');
 const Post = require('./../models/post');
 const _    = require('lodash');
+const {success, errorMessage} = require('./../helper/response');
 
 // to encrypt the password
 const bcrypt = require('bcrypt');
@@ -16,7 +17,7 @@ async function createUser(req, res){
 
     // to check if email already register
     let user = await User.findOne({ email: req.body.email });
-    if (user) return res.status(400).send('User already Registered.');
+    if (user) return res.status(400).send(errorMessage('User already Registered.'));
 
     // create new user
     user = new User({name: req.body.name, email: req.body.email, password: req.body.password});
@@ -28,7 +29,7 @@ async function createUser(req, res){
     // save the User
     const result = await user.save();
     // response or output from function    
-    res.status(200).json(result);
+    res.status(200).json(success(result,"successfully register!"));
 }
 
 
@@ -40,36 +41,32 @@ async function loginUser(req, res){
 
     // check if email already register
     let user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(400).json('Email are not Registered!');
+    if (!user) return res.status(400).json(errorMessage('Email are not Registered!'));
 
     // check if the password that store in DB same with the User input
     const validPassword = await bcrypt.compare(req.body.password, user.password)
-    if(!validPassword) return res.status(400).json('there is something wrong with your password!');
+    if(!validPassword) return res.status(400).json(errorMessage('there is something wrong with your password!'));
 
 
     // generate json Token
     const token = user.generateAuthToken();
-    res.status(200).json({token})
+    res.status(200).json(success({token}," you have been success Login"))
 };
 
 
 // to check the current user
 async function current_user(req, res){
-    // check if user input the right input
-    const { error } = validationLogin(req.body);
-    if(error) return res.status(400).json(error.details[0].message);
-
     // check if email already register
     let user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(400).json('Email are not Registered!');
+    if (!user) return res.status(400).json(errorMessage('Email are not Registered!'));
 
      // check if the password that store in DB same with the User input
      const validPassword = await bcrypt.compare(req.body.password, user.password)
-     if(!validPassword) return res.status(400).json('there is something wrong with your password!');
+     if(!validPassword) return res.status(400).json(errorMessage("it's not a valid password"));
      
     // Decryption the token to get User Information
     const token = user.generateAuthToken();
-    res.header('authentication-token', token).send(_.pick(user, ['_id', 'name', 'email']))
+    res.header('authentication-token', token).send(success(_.pick(user, ['_id', 'name', 'email']), "HERE IS YOUR DATA"))
 }
 
 // insert Post
@@ -82,14 +79,14 @@ async function insertPost(req, res){
     .populate('user', 'name')
     // save data
     const result = await post.save();
-    res.status(200).json(result);
+    res.status(200).json(success(result, "you have been successfull create new Article"));
 }
 
 
 // Show User List
 function showAllUser(req, res){
     User.find({}).then((data)=>{
-        res.status(200).json(data);
+        res.status(200).json(success(data,"here is the user list"));
     })
     .catch((err)=>{
         res.status(422).json({error: err});
