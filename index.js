@@ -1,7 +1,8 @@
 const config = require('config');
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 5001;
+require('dotenv/config');
+const port = process.env.PORT;
 const mongoose = require('mongoose');
 const auth = require('./middleware/auth');
 // for database Connection
@@ -12,12 +13,12 @@ const dbConnection = {
 }
 
 // to connect with database
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV;
 
 
 app.use(express.json());
 
-console.log(dbConnection[env])
+console.log(process.env.CLOUDINARY_CLOUD_NAME)
 
 // check if the config already connected
 if (!config.get('jwtPrivateKey')){
@@ -71,9 +72,9 @@ const cloudinary = require('cloudinary').v2
 
 // config the CLoudinary
 cloudinary.config({
-    api_key: "126537498353442",
-    api_secret: "YCrfoEhfeOr6h4vFsO1TrYWGEtA",
-    cloud_name: "dhqkkig7z"
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 })
 
 const upload = multer().single('picture')
@@ -124,7 +125,7 @@ catch(error){
 
 
     
-    // module.exports = app;
+    module.exports = app;
 
 
 

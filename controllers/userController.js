@@ -96,9 +96,9 @@ function showAllUser(req, res){
 
 // Show User based on Id and get specify Post
 function userPostList(req, res){
-  User.findById(req.params.id).populate('posts', 'title')
+  User.findById({_id: req.user._id}).populate('posts', 'title')
   .then((data)=>{
-      res.status(200).json(data)
+      res.status(200).json(success(data, "this is your post."))
   })
   .catch((err)=>{
       if(err) return res.status(422).json({error: err})
