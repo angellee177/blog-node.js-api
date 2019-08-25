@@ -69,23 +69,46 @@ async function current_user(req, res){
     res.header('authentication-token', token).send(success(_.pick(user, ['_id', 'name', 'email']), "HERE IS YOUR DATA"))
 }
 
+
+// Reset Password
+
+
+// Delete User
+function deleteUser(req, res){
+    User.findByIdAndDelete(req.user._id, 
+        function(err, data){
+            if(err) return res.status(422).json({error: err});
+
+            res.status(200).json(success(`successfully Deleted!! ${data}`))
+    })
+}
+
+
 // insert Post
 async function insertPost(req, res){
     // checking if there is any error inputs
     const { error } = validationPost(req.body);
     if(error) return res.status(400).send(error.details[0].message);
 
+    // find the user
+    let user = await User.findById(req.user._id);
+    
+    // create new post
     const post = new Post({title: req.body.title, body: req.body.body, user: req.user._id})
     .populate('user', 'name')
     // save data
-    const result = await post.save();
-    res.status(200).json(success(result, "you have been successfull create new Article"));
+    const result =  await post.save();
+
+    user.post.push(post);
+    const hasil_user_post =await user.save();
+    res.status(200).json(success(result,hasil_user_post, "you have been successfull create new Article"));    
 }
 
 
 // Show User List
 function showAllUser(req, res){
-    User.find({}).then((data)=>{
+    User.find({}).populate('post', 'title')
+    .then((data)=>{
         res.status(200).json(success(data,"here is the user list"));
     })
     .catch((err)=>{
@@ -108,5 +131,5 @@ function userPostList(req, res){
 
 
 
-module.exports = {createUser, loginUser, current_user, insertPost, showAllUser, userPostList};
+module.exports = {createUser, loginUser, current_user, deleteUser, insertPost, showAllUser, userPostList};
 

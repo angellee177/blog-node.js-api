@@ -28,7 +28,7 @@ const userSchema = new mongoose.Schema({
   profile_picture: {
     type: String
   },
-  posts: [{type: Schema.Types.ObjectId, ref: 'Post'}]
+  post: [{type: Schema.Types.ObjectId, ref: 'Post'}]
 });
 
 userSchema.methods.generateAuthToken = function() { 

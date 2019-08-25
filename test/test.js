@@ -1,4 +1,4 @@
-const server = require('../index');
+const server = require('./../index');
 const chai = require('chai');
 const chaihttp = require('chai-http');
 const should = chai.should();
@@ -20,7 +20,17 @@ describe('/GET the root path', ()=>{
     })
 })
 
-
+// GET user SHOW list
+describe('/GET user SHOW Routes', ()=> {
+    it("it should get All User Routes", (done)=>{
+        chai.request(server)
+        .get('/api/user/show')
+        .end((err, res)=>{
+            res.should.have.status(200);
+            done();
+        })
+    })
+})
 
 
 
