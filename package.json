@@ -1,7 +1,7 @@
 {
   "name": "article",
   "version": "1.0.0",
-  "description": "",
+  "description": "try it out : https://angel-article-api.herokuapp.com/",
   "main": "index.js",
   "directories": {
     "test": "test"
@@ -39,5 +39,14 @@
     "nodemon": "^1.19.1",
     "nyc": "^14.1.1",
     "swagger-ui-express": "^4.0.7"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/angellee177/blog-node.js-api.git"
+  },
+  "bugs": {
+    "url": "https://github.com/angellee177/blog-node.js-api/issues"
+  },
+  "homepage": "https://github.com/angellee177/blog-node.js-api#readme"
 }
