@@ -12,8 +12,8 @@ const {validationRegister, validationPost, validationLogin} = require('./../help
 // Register new User Function
 async function createUser(req, res){
     // checking if there is any error at req.body
-    // const { error } = validationRegister(req.body);
-    // if(error) return res.status(400).send(error.details[0].message);
+    const { error } = validationRegister(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
 
     // to check if email already register
     let user = await User.findOne({ email: req.body.email });
@@ -36,8 +36,8 @@ async function createUser(req, res){
 // Login Controller
 async function loginUser(req, res){
     // check if user input the right input
-    // const { error } = validationLogin(req.body);
-    // if(error) return res.status(400).json(error.details[0].message);
+    const { error } = validationLogin(req.body);
+    if(error) return res.status(400).json(error.details[0].message);
 
     // check if email already register
     let user = await User.findOne({ email: req.body.email });
@@ -87,8 +87,8 @@ function deleteUser(req, res){
 // insert Post
 async function insertPost(req, res){
     // checking if there is any error inputs
-    // const { error } = validationPost(req.body);
-    // if(error) return res.status(400).send(error.details[0].message);
+    const { error } = validationPost(req.body);
+    if(error) return res.status(400).send(error.details[0].message);
 
     // find the user
     let user = await User.findById(req.user._id);
