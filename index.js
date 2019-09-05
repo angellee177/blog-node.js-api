@@ -105,6 +105,24 @@ app.post('/posting', upload, auth, function(req, res){
                     })
 
 
+// get Handlebars
+const express_handlebars = require('express-handlebars');
+app.engine('handlebars', express_handlebars());
+app.set('view engine', 'handlebars');
+// get Home Page
+app.get('/handlebars', function(req, res){
+    res.render('home');
+});
+/// get Login Page
+app.get('/login', function(req, res){
+    res.render('login');
+});
+// get Register Page
+app.get('/register', function(req, res){
+    res.render('register');
+});
+
+
 // to connect with the DB
 try{
     mongoose.connect(dbConnection[env], 

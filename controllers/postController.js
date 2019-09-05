@@ -19,7 +19,9 @@ function UpdatePost(req, res){
                 $set: {title: req.body.title, body: req.body.body, user: req.user._id}
             },{new: true}, 
             function(err, result){
+
                 if(err) return res.status(422).json(err);
+                
                 res.status(200).json(success(result, "Successfully Update Article"))
                 
             })
@@ -56,7 +58,7 @@ async function deletePost(req, res){
     let post = await Post.findById(req.body.postId);
 
     // get the User ID at Post Schema
-    let user = await Post.findOne({user: req.body.userId});
+    let user = await Post.findOne({user: req.user._id});
 
     // get the User Data based on Req.body.userId
     user = await User.findById(req.body.userId);
@@ -64,7 +66,7 @@ async function deletePost(req, res){
 
     // Delete the post from User Id
     removePost(user.post, post._id);
-
+    user.save();
     // delete the post from Post Index
     post = await Post.findByIdAndDelete(req.body.postId);
     res.status(200).json(success(post, "Delete Article successfully!"));

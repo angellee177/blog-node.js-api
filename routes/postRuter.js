@@ -3,7 +3,7 @@ const postController = require('./../controllers/postController');
 const auth = require('./../middleware/auth');
 
 router.put('/updatePost/:id', auth, postController.UpdatePost);
-router.get('/show', auth, postController.showAllPost);
+router.get('/show', postController.showAllPost);
 router.delete('/delete', auth, postController.deletePost);
 
 

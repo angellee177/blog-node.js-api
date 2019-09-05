@@ -25,10 +25,11 @@
     }
   ],
   "schemes": [
-    "http"
+    "http",
+    "https"
   ],
   "paths": {
-    "/user/show": {
+    "/user/": {
       "get": {
         "tags": [
           "User Operation"
@@ -76,6 +77,9 @@
         "responses": {
           "201": {
             "description": "User successfully created."
+          },
+          "422":{
+            "description": "Email Already Register"
           }
         }
       }
@@ -107,6 +111,12 @@
         "responses": {
           "200": {
             "description": "If user exist, and  the password is matched. It will response token object."
+          },
+          "421":{
+            "description": "Email are not registered!"
+          },
+          "422":{
+            "description": "There is something wrong with your password"
           }
         },
         "security": [
@@ -135,9 +145,7 @@
             "name": "header",
             "description": "Will gett User Data from token",
             "required": true,
-            "schema": {
-              "$ref": "#/definitions/UserLogin"
-            }
+            "type": "string"
           }
         ],
         "responses": {

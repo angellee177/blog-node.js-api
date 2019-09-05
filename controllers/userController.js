@@ -17,7 +17,7 @@ async function createUser(req, res){
 
     // to check if email already register
     let user = await User.findOne({ email: req.body.email });
-    if (user) return res.status(400).send(errorMessage('User already Registered.'));
+    if (user) return res.status(422).send(errorMessage('User already Registered.'));
 
     // create new user
     user = new User({name: req.body.name, email: req.body.email, password: req.body.password});
@@ -39,13 +39,13 @@ async function loginUser(req, res){
     const { error } = validationLogin(req.body);
     if(error) return res.status(400).json(error.details[0].message);
 
-    // check if email already register
+    // check if email are not register
     let user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(400).json(errorMessage('Email are not Registered!'));
+    if (!user) return res.status(421).json(errorMessage('Email are not Registered!'));
 
     // check if the password that store in DB same with the User input
     const validPassword = await bcrypt.compare(req.body.password, user.password)
-    if(!validPassword) return res.status(400).json(errorMessage('there is something wrong with your password!'));
+    if(!validPassword) return res.status(422).json(errorMessage('there is something wrong with your password!'));
 
 
     // generate json Token
@@ -95,7 +95,7 @@ async function insertPost(req, res){
     
     // create new post
     const post = new Post({title: req.body.title, body: req.body.body, user: req.user._id})
-    .populate('user', 'name')
+    .populate({path: 'user', select:'name'});
     // save data
     const result =  await post.save();
 
@@ -106,20 +106,15 @@ async function insertPost(req, res){
 
 
 // Show User List
-function showAllUser(req, res){
-    User.find({}).populate('post', 'title')
-    .then((data)=>{
-        res.status(200).json(success(data,"here is the user list"));
-    })
-    .catch((err)=>{
-        res.status(422).json({error: err});
-    })
+async function showAllUser(req, res){
+    const userList = await User.find({}).populate({path: "post", select: "title"});
+    res.status(200).json(success(userList, "here is your User List:"))
 }
 
 
 // Show User based on Id and get specify Post
 function userPostList(req, res){
-  User.findById({_id: req.user._id}).populate('posts', 'title')
+  User.findById({_id: req.user._id}).populate('post', 'title')
   .then((data)=>{
       res.status(200).json(success(data, "this is your post."))
   })

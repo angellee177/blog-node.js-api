@@ -1,13 +1,20 @@
-const server = require('./../index');
+const server = require('../index');
 const chai = require('chai');
 const chaihttp = require('chai-http');
 const should = chai.should();
+// get User Model
+const User = require('./../models/user');
+
+// var name = faker
+
 
 chai.use(chaihttp);
 chai.should();
 
-// to test the root path
-describe('/GET the root path', ()=>{
+
+
+// 1. to test the root path
+describe('/Get the root path', ()=>{
     it("should get the index page", (done)=>{
         chai.request(server)
         .get('/')
@@ -20,17 +27,23 @@ describe('/GET the root path', ()=>{
     })
 })
 
-// GET user SHOW list
-describe('/GET user SHOW Routes', ()=> {
-    it("it should get All User Routes", (done)=>{
+// 2. Get the show list
+describe('/Get the show path from User', ()=>{
+    it("should show all User list", (done)=>{
         chai.request(server)
-        .get('/api/user/show')
+        .get('/api/user/')
         .end((err, res)=>{
             res.should.have.status(200);
+            res.body.should.have.property('success').equal(true);
+            res.should.be.an("object");
             done();
         })
     })
 })
+
+
+
+
 
 
 
